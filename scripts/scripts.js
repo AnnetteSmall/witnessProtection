@@ -78,6 +78,14 @@ var wp = {
       activity: "sedentary",
       measurements: [{
       weight: 95.8,
+      shoulders: null,
+      waist: null,
+      chest: null,
+      hips: null,
+      arm: null,
+      forarm: null,
+      thigh: null,
+      calf: null,
       date: "2018/01/25"
     }]
     }
@@ -236,3 +244,61 @@ var wp = {
     return ~~Kcal
 }
 }
+
+var view ={
+  displayUsers: function(){
+    var usersUL = document.querySelector('ul');
+    // usersUL.innerHTML = 'Hello';
+    // console.log(wp.users.length);
+    for (var i = 0; i< wp.users.length ; i++){
+      var user = wp.users[i].name;
+      var userLi = document.createElement('li');
+      var userButton = document.createElement('Button');
+      userButton.id = i;
+      userButton.textContent = user;
+      userLi.appendChild(userButton);
+      usersUL.appendChild(userLi);
+      // console.log(wp.users[i]);
+      // console.log(userLi);
+    }
+  }
+}
+
+// console.log(wp);
+view.displayUsers();
+
+var userUl = document.querySelector('ul')
+userUl.addEventListener('click', function(event){
+  index = event.target.id;
+  var user = wp.users[index];
+  var profileName = document.getElementById("profileName");
+  profileName.textContent = user.name;
+  // Display data per key
+  for (var key in user) {
+
+    if (user.hasOwnProperty(key)) {
+      var type = typeof user[key];
+      // if type is an object
+      if (type === "object" ){
+        var currentKey = user[key];
+        for (var subKey in currentKey){
+          if (currentKey.hasOwnProperty(subKey)){
+            var currentMeasurements = user[key][subKey];
+            for (var measurementsKey in currentMeasurements){
+              current = document.getElementById(measurementsKey);
+              current.style.display = "block";
+              current.textContent = currentMeasurements[measurementsKey]
+
+            }
+          }
+        }
+      } else {
+        current = document.getElementById(key);
+        current.style.display = "block";
+        current.textContent = user[key];
+
+      }
+
+    }
+}
+})
