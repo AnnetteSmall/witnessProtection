@@ -113,6 +113,7 @@ var wp = {
         }
       }
     }
+
     return [min, beginWeight]
   },
   lastDate: function(name){
@@ -308,4 +309,34 @@ userUl.addEventListener('click', function(event){
 
     }
 }
+});
+var addUserFormButton = document.getElementById('addUser')
+addUserFormButton.addEventListener('click', function(event){
+  document.getElementById('addNewUser').style.display = 'block';
+});
+
+var addNewProfile = document.getElementById('submitNewProfile');
+addNewProfile.addEventListener('click', function(event){
+  var formProfileName = document.getElementById('newProfileName').value;
+  var formdob = document.getElementById('newProfiledob').value;
+  if (document.getElementById('newProfileGenderMale').checked === true){
+    var formGender = document.getElementById('newProfileGenderMale').value
+  } else if (document.getElementById('newProfileGenderFemale').checked === true){
+    var formGender = document.getElementById('newProfileGenderFemale').value
+  };
+  if (document.getElementById('newProfileActivity1').checked === true){
+    var formActivity = document.getElementById('newProfileActivity1').value
+  } else if (document.getElementById('newProfileActivity2').checked === true) {
+    var formActivity = document.getElementById('newProfileActivity2').value
+  } else if (document.getElementById('newProfileActivity3').checked === true) {
+    var formActivity = document.getElementById('newProfileActivity3').value
+  } else if (document.getElementById('newProfileActivity4').checked === true) {
+    var formActivity = document.getElementById('newProfileActivity4').value
+  } else if (document.getElementById('newProfileActivity5').checked === true) {
+    var formActivity = document.getElementById('newProfileActivity5').value
+  };
+  var formHeight = document.getElementById('newProfileHeight').value;
+  profile = {name: formProfileName, dob: formdob, gender: formGender, activity: formActivity, height: formHeight };
+  writeData('users', profile);
+  document.getElementById('addNewUser').style.display = 'none';
 })

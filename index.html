@@ -3,6 +3,37 @@
   <link href="styles/style.css" type="text/css" rel="stylesheet />"
   </head>
   <body>
+    <button id="addUser">Add user</button>
+    <div style="display:none" id="addNewUser">
+      <div>
+        <label for="newProfileName">Name:
+        <input type="text" name="newProfileName" id="newProfileName"></input>
+      </div>
+      <div>
+        <label for="newProfiledob">Date of Birth
+        <input type="date" name="newProfiledob" id="newProfiledob"></input>
+      </div>
+      <div>
+        <label for="newProfileGender">Gender</label><br>
+        <input type="radio" name="newProfileGender" id="newProfileGenderMale" value="male">Male<br>
+        <input type="radio" name="newProfileGender" id="newProfileGenderFemale" value="female">Female<br>
+      </div>
+      <div>
+        <label for="newProfileActivity">Activity</label><br>
+        <input type="radio" name="newProfileActivity" id="newProfileActivity1" value="sedentary">Sedentary<br>
+        <input type="radio" name="newProfileActivity" id="newProfileActivity2" value="lightlyActive">Lightly Active<br>
+        <input type="radio" name="newProfileActivity" id="newProfileActivity3" value="moderatelyActive">Moderately Active<br>
+        <input type="radio" name="newProfileActivity" id="newProfileActivity4" value="veryActive">Very Active<br>
+        <input type="radio" name="newProfileActivity" id="newProfileActivity5" value="extraActive">Extra Active<br>
+      </div>
+      <div>
+        <label for="newProfileHeight">Height</label><br>
+        <input type="number" name="newProfileHeight" id="newProfileHeight" > Meter
+      </div>
+      <button type="submit" id="submitNewProfile">Submit</button>
+    </div>
+
+
 <h1>Users</h1>
 <ul>
 
@@ -89,6 +120,8 @@
 
 
 
+    <script src="scripts/idb.js"></script>
+    <script src="scripts/DAO.js"></script>
   <script src="scripts/scripts.js"></script>
   </body>
 </html>
