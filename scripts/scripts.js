@@ -17,7 +17,7 @@ var wp = {
           forarm: 23.5,
           thigh: 54,
           calf: 37,
-          date: "2018/01/25"
+          measurmentDate: "2018/01/25"
         },
         {
           weight: 61.1,
@@ -29,7 +29,7 @@ var wp = {
           forarm: 23.5,
           thigh: 54,
           calf: 37,
-          date: "2018/01/26"
+          measurmentDate: "2018/01/26"
         },
         {
           weight: 61.8,
@@ -41,7 +41,7 @@ var wp = {
           forarm: 23.5,
           thigh: 54,
           calf: 37,
-          date: "2018/01/24"
+          measurmentDate: "2018/01/24"
         },
         {
           weight: 62,
@@ -53,11 +53,11 @@ var wp = {
           forarm: 23.5,
           thigh: 54,
           calf: 37,
-          date: "2018/01/22"
+          measurmentDate: "2018/01/22"
         }
       ],
       meals:[{
-        date:"2018/02/02",
+        mealDate:"2018/02/02",
         meal:[{
           category: "Breakfast",
           Food: ["Egg","Bacon", "Mayo"],
@@ -86,7 +86,7 @@ var wp = {
       forarm: null,
       thigh: null,
       calf: null,
-      date: "2018/01/25"
+      measurmentDate: "2018/01/25"
     }]
     }
   ],
@@ -102,12 +102,12 @@ var wp = {
     for ( var i = 0; i < totalUsers; i++){
       if (name === this.users[i].name){
         if (this.users[i].measurements.length>= 1){
-          var min = this.users[i].measurements[0].date;
+          var min = this.users[i].measurements[0].measurmentDate;
           var beginWeight = this.users[i].measurements[0].weight
         }
         for ( var j = 1; j < this.users[i].measurements.length; j++){
-          if (new Date(min) > new Date(this.users[i].measurements[j].date)){
-            min = this.users[i].measurements[j].date;
+          if (new Date(min) > new Date(this.users[i].measurements[j].measurmentDate)){
+            min = this.users[i].measurements[j].measurmentDate;
             var beginWeight = this.users[i].measurements[j].weight
           }
         }
@@ -124,8 +124,8 @@ var wp = {
           var lastWeight = this.users[i].measurements[0].weight
         }
         for ( var j = 0; j < this.users[i].measurements.length; j++){
-          if (new Date(max) < new Date(this.users[i].measurements[j].date)){
-            max = this.users[i].measurements[j].date
+          if (new Date(max) < new Date(this.users[i].measurements[j].measurmentDate)){
+            max = this.users[i].measurements[j].measurmentDate
             var lastWeight = this.users[i].measurements[j].weight
           }
         }
@@ -271,6 +271,8 @@ var userUl = document.querySelector('ul')
 userUl.addEventListener('click', function(event){
   index = event.target.id;
   var user = wp.users[index];
+  var name = wp.users[index].name;
+  wp.displayUser(name);
   var profileName = document.getElementById("profileName");
   profileName.textContent = user.name;
   // Display data per key
@@ -286,8 +288,13 @@ userUl.addEventListener('click', function(event){
             var currentMeasurements = user[key][subKey];
             for (var measurementsKey in currentMeasurements){
               current = document.getElementById(measurementsKey);
-              current.style.display = "block";
-              current.textContent = currentMeasurements[measurementsKey]
+              if (currentMeasurements[measurementsKey] === null){
+                current.style.display = "none";
+              } else {
+                current.style.display = "block";
+                current.textContent = measurementsKey + ": " + currentMeasurements[measurementsKey]
+              }
+
 
             }
           }
@@ -295,7 +302,7 @@ userUl.addEventListener('click', function(event){
       } else {
         current = document.getElementById(key);
         current.style.display = "block";
-        current.textContent = user[key];
+        current.textContent = key + ": " + user[key];
 
       }
 
