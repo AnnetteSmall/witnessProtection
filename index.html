@@ -4,7 +4,8 @@
   </head>
   <body>
     <button id="addUser">Add user</button>
-    <div style="display:none" id="addNewUser">
+    <button id='displayUsers'>Users</button>
+    <form  id="addNewUser">
       <div>
         <label for="newProfileName">Name:
         <input type="text" name="newProfileName" id="newProfileName"></input>
@@ -31,14 +32,14 @@
         <input type="number" name="newProfileHeight" id="newProfileHeight" > Meter
       </div>
       <button type="submit" id="submitNewProfile">Submit</button>
-    </div>
+    </form>
 
 
-<h1>Users</h1>
-<ul>
+<!-- <h1 id='displayUsers'>Users</h1> -->
+<ul id="userList">
 
 </ul>
-<div>
+<div id='displayUserProfile' class='display'>
   <h1 id="profileName">Name<h1>
     <h3>Profile</h3>
     <div id="name" style="display:none">
@@ -81,7 +82,6 @@
     </div>
     <div id="waist" style="display:none">
         <h5>waist</h5>
-    </div>
     </div>
     <div id="chest" style="display:none">
       <h5>chest</h5>

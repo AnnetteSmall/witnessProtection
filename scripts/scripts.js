@@ -1,3 +1,5 @@
+
+
 var wp = {
   users : [
     {
@@ -248,7 +250,7 @@ var wp = {
 
 var view ={
   displayUsers: function(){
-    var usersUL = document.querySelector('ul');
+    var usersUL = document.getElementById('userList');
     // usersUL.innerHTML = 'Hello';
     // console.log(wp.users.length);
     for (var i = 0; i< wp.users.length ; i++){
@@ -265,11 +267,23 @@ var view ={
   }
 }
 
+var displyUsers = document.getElementById('displayUsers');
+var clickCount = 0
+displyUsers.addEventListener('click', function(){
+  clickCount ++
+  if (clickCount % 2 === 0){
+    document.getElementById('userList').innerHTML = '';
+  } else {
+    view.displayUsers();
+  }
+})
 // console.log(wp);
-view.displayUsers();
+
 
 var userUl = document.querySelector('ul')
 userUl.addEventListener('click', function(event){
+  var displayProfile = document.getElementById('displayUserProfile');
+  displayProfile.classList.toggle('display');
   index = event.target.id;
   var user = wp.users[index];
   var name = wp.users[index].name;
@@ -312,7 +326,8 @@ userUl.addEventListener('click', function(event){
 });
 var addUserFormButton = document.getElementById('addUser')
 addUserFormButton.addEventListener('click', function(event){
-  document.getElementById('addNewUser').style.display = 'block';
+  var formDisplay = document.getElementById('addNewUser');
+  formDisplay.classList.toggle('display');
 });
 
 var addNewProfile = document.getElementById('submitNewProfile');
@@ -339,4 +354,13 @@ addNewProfile.addEventListener('click', function(event){
   profile = {name: formProfileName, dob: formdob, gender: formGender, activity: formActivity, height: formHeight };
   writeData('users', profile);
   document.getElementById('addNewUser').style.display = 'none';
+  document.getElementById('addNewUser').reset();
 })
+
+function init(){
+  var formDisplay = document.getElementById('addNewUser');
+  formDisplay.classList.toggle('display');
+
+    }
+
+init();
