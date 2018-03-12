@@ -2,10 +2,16 @@
   <head>
   <link href="styles/style.css" type="text/css" rel="stylesheet />"
   </head>
+
   <body>
-    <button id="addUser">Add user</button>
-    <button id='displayUsers'>Users</button>
-    <form  id="addNewUser">
+
+    <button id='displayUsersButton'>Users</button>
+    <button id="addUserButton">Add user</button>
+
+
+    <!-- Add new Profile form -->
+    <form  id="addNewUser" >
+        <button id='homeFromProfile'>Return</button>
       <div>
         <label for="newProfileName">Name:
         <input type="text" name="newProfileName" id="newProfileName"></input>
@@ -34,94 +40,136 @@
       <button type="submit" id="submitNewProfile">Submit</button>
     </form>
 
+    <!-- Build list of users from Local storage here -->
+    <ul id="userList" ></ul>
 
-<!-- <h1 id='displayUsers'>Users</h1> -->
-<ul id="userList">
+    <!-- Display Profile detals for User Selected -->
+    <div id='displayUserProfile' >
+      <button id='home'>Home</button>
+      <h1 id="profileName">Name<h1>
+        <h3>Profile</h3>
+        <p id='Rowid' style="display:none"></p>
+        <div id="name" style="display:none">
+          <h5>name</h5>
+        </div>
+        <div id="age" style="display:none">
+          <h5>age</h5>
+        </div>
+        <div id="dob" style="display:none">
+          <h5>dob</h5>
+        </div>
+        <div id="gender" style="display:none">
+          <h5 >gender</h5>
+        </div>
+        <div id="startdate" style="display:none">
+          <h5>startdate</h5>
+        </div>
+        <div id="startWeight" style="display:none">
+          <h5>startWeight</h5>
+        </div>
+        <div id="activity" style="display:none">
+          <h5>activity</h5>
+        </div>
+        <div id="height" style="display:none">
+          <h5>height</h5>
+        </div>
+        <div id="bmi" style="display:none">
+          <h5>bmi</h5>
+        </div>
+        <div id="kcal" style="display:none">
+          <h5>kcal</h5>
+        </div>
 
-</ul>
-<div id='displayUserProfile' class='display'>
-  <h1 id="profileName">Name<h1>
-    <h3>Profile</h3>
-    <div id="name" style="display:none">
-      <h5>name</h5>
-    </div>
-    <div id="age" style="display:none">
-      <h5>age</h5>
-    </div>
-    <div id="dob" style="display:none">
-      <h5>dob</h5>
-    </div>
-    <div id="gender" style="display:none">
-      <h5 >gender</h5>
-    </div>
-    <div id="startdate" style="display:none">
-      <h5>startdate</h5>
-    </div>
-    <div id="startWeight" style="display:none">
-      <h5>startWeight</h5>
-    </div>
-    <div id="activity" style="display:none">
-      <h5>activity</h5>
-    </div>
-    <div id="height" style="display:none">
-      <h5>height</h5>
-    </div>
-    <div id="bmi" style="display:none">
-      <h5>bmi</h5>
-    </div>
-    <div id="kcal" style="display:none">
-      <h5>kcal</h5>
-    </div>
+        <h3>Measurements</h3>
+        <div id="weight" style="display:none;">
+          <h5 >weight</h5>
+        </div>
+        <div id="shoulders" style="display:none">
+          <h5>shoulders</h5>
+        </div>
+        <div id="waist" style="display:none">
+            <h5>waist</h5>
+        </div>
+        <div id="chest" style="display:none">
+          <h5>chest</h5>
+        </div>
+        <div id="hips" style="display:none">
+          <h5>hips</h5>
+        </div>
+        <div id="arm" style="display:none">
+          <h5>arm</h5>
+        </div>
+        <div id="forarm" style="display:none">
+          <h5>forarm</h5>
+        </div>
+        <div id="thigh" style="display:none">
+          <h5>thigh</h5>
+        </div>
+        <div id="calf" style="display:none">
+          <h5>calf</h5>
+        </div>
+        <div id="date" style="display:none">
+          <h5>date</h5>
+        </div>
 
-    <h3>Measurements</h3>
-    <div id="weight" style="display:none;">
-      <h5 >weight</h5>
-    </div>
-    <div id="shoulders" style="display:none">
-      <h5>shoulders</h5>
-    </div>
-    <div id="waist" style="display:none">
-        <h5>waist</h5>
-    </div>
-    <div id="chest" style="display:none">
-      <h5>chest</h5>
-    </div>
-    <div id="hips" style="display:none">
-      <h5>hips</h5>
-    </div>
-    <div id="arm" style="display:none">
-      <h5>arm</h5>
-    </div>
-    <div id="forarm" style="display:none">
-      <h5>forarm</h5>
-    </div>
-    <div id="thigh" style="display:none">
-      <h5>thigh</h5>
-    </div>
-    <div id="calf" style="display:none">
-      <h5>calf</h5>
-    </div>
-    <div id="date" style="display:none">
-      <h5>date</h5>
-    </div>
+        <h1 id="meal" style="display:none">Meals</h1>
+          <!-- <h2>Breakfast</h2>
+          category: "Breakfast",
+          <h5 style="display:none">Food</h5>: ["Egg","Bacon", "Mayo"],
+          <h5>Drink</h5>: ["Coffee", "Water"],
+          <h2>Lunch</h2>category: "Lunch",
+          Food: ["Coleslaw","Chicken Breast", "Chicken wing"],
+          Drink: ["Coke Zero", "Water"],
+          <h2>Dinner</<h2>
+          <h2>Snack</h2>
+          <h2>Cheat</h2> -->
 
-      <h1 id="meal" style="display:none">Meals</h1>
-        <!-- <h2>Breakfast</h2>
-        category: "Breakfast",
-        <h5 style="display:none">Food</h5>: ["Egg","Bacon", "Mayo"],
-        <h5>Drink</h5>: ["Coffee", "Water"],
-        <h2>Lunch</h2>category: "Lunch",
-        Food: ["Coleslaw","Chicken Breast", "Chicken wing"],
-        Drink: ["Coke Zero", "Water"],
-        <h2>Dinner</<h2>
-        <h2>Snack</h2>
-        <h2>Cheat</h2> -->
-    </div>
+          <button id="addMeasurementsButton">Add Measurements</button>
+
+      </div>
 
 
 
     <script src="scripts/idb.js"></script>
+
+    <!-- Add Measurements form -->
+    <form id="addMeasurmentsForm" action=>
+
+      <div id="fweight">
+        <input type="number" id="new_weight" name="weight" placeholder="Weight in KG">
+      </div>
+      <div id="fshoulders">
+        <input type="number" id="new_shoulders" name="shoulders" placeholder="Shoulder in cm">
+      </div>
+      <div id="fwaist">
+        <input type="number" id="new_waist" name="waist" placeholder="Waist in cm">
+      </div>
+      <div>
+        <input type="number" id="new_chest" name="chest" placeholder="chest in cm">
+      </div>
+      <div>
+        <input type="number" id="new_hips" name="hips" placeholder="hips in cm">
+      </div>
+      <div>
+        <input type="number" id="new_upperArm" name="upperArm" placeholder="Upper Arm in cm">
+      </div>
+      <div>
+        <input type="number" id="new_forarm" name="forarm" placeholder="Forarm in cm">
+      </div>
+      <div>
+        <input type="number" id="new_thigh" name="thigh" placeholder="Thigh in cm">
+      </div>
+      <div>
+        <input type="number" id="new_calf" name="calf" placeholder="Calf in cm">
+      </div>
+      <div>
+        <input type="date" name="date" id="new_MeasurementInputDate">
+      </div>
+      <button  type='button' id="saveMeasurmentButton">Save</button>
+    </form>
+
     <script src="scripts/DAO.js"></script>
-  <script src="scripts/scripts.js"></script>
+    <script src="scripts/scripts.js"></script>
+
   </body>
 </html>

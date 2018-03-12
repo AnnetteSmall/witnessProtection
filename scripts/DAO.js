@@ -27,6 +27,15 @@ function readAllData(st) {
       return store.getAll();
     });
 }
+function readOneData(st, Rowid) {
+  return dbPromise
+    .then(function(db) {
+      var tx = db.transaction(st, 'readonly');
+      var store = tx.objectStore(st);
+      return store.get(Rowid);
+    });
+}
+
 
 function dataURItoBlob(dataURI) {
     console.log('URI thingie');
