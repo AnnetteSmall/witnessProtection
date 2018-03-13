@@ -1,4 +1,31 @@
 
+// Toggle Users List box
+var toggleIconUserListButton = document.getElementById('toggleIconUserListButton');
+var userList = document.getElementById('userList');
+toggleIconUserListButton.addEventListener('click', function(event){
+  userList.classList.toggle('display');
+})
+
+// Toggle Profile List box
+var toggleIconUserProfile = document.getElementById('toggleIconUserProfile');
+var displayUserProfile = document.getElementById('displayUserProfile');
+toggleIconUserProfile.addEventListener('click', function(event){
+  displayUserProfile.classList.toggle('display');
+})
+
+// Toggle Add New User Form box
+var toggleAddUserForm = document.getElementById('toggleAddUserForm');
+var addNewUser = document.getElementById('addNewUser');
+toggleAddUserForm.addEventListener('click', function(event){
+  addNewUser.classList.toggle('display');
+})
+
+// Toggle Add New User Form box
+var toggleAddMeasurmentsForm = document.getElementById('toggleAddMeasurmentsForm');
+var addMeasurmentsForm = document.getElementById('addMeasurmentsForm');
+toggleAddMeasurmentsForm.addEventListener('click', function(event){
+  addMeasurmentsForm.classList.toggle('display');
+})
 
 var wp = {
   users : [
@@ -99,42 +126,41 @@ var wp = {
     console.log(user,begin,end)
 
   },
-  startDate: function(name){
-    var totalUsers = this.users.length;
-    for ( var i = 0; i < totalUsers; i++){
-      if (name === this.users[i].name){
-        if (this.users[i].measurements.length>= 1){
-          var min = this.users[i].measurements[0].measurmentDate;
-          var beginWeight = this.users[i].measurements[0].weight
-        }
-        for ( var j = 1; j < this.users[i].measurements.length; j++){
-          if (new Date(min) > new Date(this.users[i].measurements[j].measurmentDate)){
-            min = this.users[i].measurements[j].measurmentDate;
-            var beginWeight = this.users[i].measurements[j].weight
-          }
+  startDate: function(measurementsList){
+    var totalEntries = measurementsList.length;
+    // var measurementsList = user['measurements'];
+    for (var i = 0; i<totalEntries; i++){
+      if (measurementsList.length>= 1){
+      var min = measurementsList[0].date;
+      var beginWeight = measurementsList[0].weight;
+      }
+      for (var j = 1; j< totalEntries; j++){
+        if (new Date(min) > new Date(measurementsList[j].date)){
+          min = measurementsList[j].date;
+          beginWeight = measurementsList[j].weight;
+
         }
       }
     }
-
     return [min, beginWeight]
   },
-  lastDate: function(name){
-    var totalUsers = this.users.length;
-    for ( var i = 0; i < totalUsers; i++){
-      if (name === this.users[i].name){
-        if (this.users[i].measurements.length>= 1){
-          var max = this.users[i].measurements[0].date;
-          var lastWeight = this.users[i].measurements[0].weight
-        }
-        for ( var j = 0; j < this.users[i].measurements.length; j++){
-          if (new Date(max) < new Date(this.users[i].measurements[j].measurmentDate)){
-            max = this.users[i].measurements[j].measurmentDate
-            var lastWeight = this.users[i].measurements[j].weight
-          }
+  lastDate: function(measurementsList){
+    var totalEntries = measurementsList.length;
+    // var measurementsList = user['measurements'];
+    for (var i = 0; i<totalEntries; i++){
+      if (measurementsList.length>= 1){
+      var max = measurementsList[0].date;
+      var lastWeight = measurementsList[0].weight;
+      }
+      for (var j = 1; j< totalEntries; j++){
+        if (new Date(max) < new Date(measurementsList[j].date)){
+          max = measurementsList[j].date;
+          lastWeight = measurementsList[j].weight;
+
         }
       }
     }
-    return [max,lastWeight]
+    return [max, lastWeight]
   },
   displayUser: function(name){
     totalUsers = this.users.length;
@@ -213,7 +239,7 @@ var wp = {
     this.users[position].name = name;
     this.displayUser(name);
   },
-  calculateBMI: function(name, weight, height){
+  calculateBMI: function(weight, height){
     var bmi = weight / (height * height);
     return ~~bmi
   },
@@ -244,7 +270,7 @@ var wp = {
     }
     return ~~Kcal
   }
-}
+};
 
 var view ={
   displayUsers: function(){
@@ -260,16 +286,17 @@ var view ={
         userLi.appendChild(userButton);
         usersUL.appendChild(userLi);
         }
-
-      });
+    });
   },
   displayUser: function(){
     // var totalUsers = this.users.length;
       var displayProfile = document.getElementById('displayUserProfile');
-      displayProfile.classList.toggle('display');
       var index = event.target.id;
       readOneData('users', parseInt(index)).
       then (function(user){
+        var start = wp.startDate(user['measurements']);
+        var end = wp.lastDate(user['measurements']);
+        var height = user['height'];
         var name =  user.name;
         var profileName = document.getElementById("profileName");
         profileName.textContent = name;
@@ -286,7 +313,7 @@ var view ={
                     current = document.getElementById(measurementsKey);
                     if (currentMeasurements[measurementsKey] === null){
                       current.classList.toggle('display')
-                    } else {
+                    }else {
                       current.style.display = "block";
                       current.textContent = measurementsKey + ": " + currentMeasurements[measurementsKey]
                     }
@@ -295,12 +322,41 @@ var view ={
               }
             } else {
               current = document.getElementById(key);
-              if (key != 'Rowid'){
-                current.style.display = "block";
-                current.textContent = key + ": " + user[key];
-              } else {
+              if (key === 'Rowid'){
+                // console.log(key);
                 current.style.display = "none";
                 current.textContent = user[key];
+              } else if (key === 'dob') {
+                // console.log(key);
+                var age = wp.calcAge(user['dob']);
+                current.style.display = "block";
+                current.textContent = 'Age: ' + age;
+                startdate = document.getElementById('startdate');
+                startdate.style.display = "Block";
+                startdate.textContent = 'Start Date: ' + start[0];
+                startWeight = document.getElementById('startWeight');
+                startWeight.style.display = "Block";
+                startWeight.textContent = 'Start Weight: ' + start[1];
+
+                lastWeight = document.getElementById('lastWeight');
+                lastWeight.style.display = "Block";
+                lastWeight.textContent = 'Last Weight: ' + end[1];
+                weightLoss = document.getElementById('weightLoss');
+                weightLoss.style.display = "Block";
+                weightLoss.textContent = 'Weight Loss: ' + (start[1]-end[1]);
+                var bmiValue = wp.calculateBMI(end[1], height);
+                bmi = document.getElementById('bmi');
+                bmi.style.display = 'Block';
+                bmi.textContent = "BMI: " + bmiValue;
+                var kcalValue = wp.calculateKcal(end[1], height, user['dob'],user['gender'], user['activity']);
+                kcal = document.getElementById('kcal');
+                kcal.style.display = "Block";
+                kcal.textContent = "Daily Calories: " + kcalValue;
+                console.log(kcalValue);
+
+              } else {
+                current.style.display = "block";
+                current.textContent = key + ": " + user[key];
               }
               }
 
@@ -310,74 +366,11 @@ var view ={
     }
 };
 
-// Toggle Display User List
-var displayUsersButton = document.getElementById('displayUsersButton');
-var clickCount = 0;
-displayUsersButton.addEventListener('click', function(){
-  // view.displayUsers();
-  var usersUL = document.getElementById('userList');
-  var child = usersUL.hasChildNodes();
-  console.log(child);
-  if (child){
-    document.getElementById('userList').innerHTML = '';
-  } else {
-    view.displayUsers();
-  }
-
-  // clickCount ++
-  // if (clickCount % 2 === 1){
-  //   view.displayUsers();
-  // } else {
-  //   console.log('else')
-  //   // document.getElementById('userList').innerHTML = '';
-  //   var listUl = document.getElementById('userList')
-  //   // listUl.classList.toggle('display');
-  // }
-});
-
-// Return home
-var home = document.getElementById('home');
-home.addEventListener('click', function(event){
-  var displayUserProfile = document.getElementById('displayUserProfile');
-  var addMeasurmentsForm = document.getElementById('addMeasurmentsForm');
-  displayUserProfile.classList.toggle('display');
-  addMeasurmentsForm.classList.toggle('display');
-  displayUsersButton.classList.toggle('display');
-  addUserButton.classList.toggle('display');
-});
-
-// Display User Details
-var userList = document.querySelector('ul')
+// select User to show full profile
+var userList = document.getElementById('userList');
 userList.addEventListener('click', function(event){
-  var displayUsersButton = document.getElementById('displayUsersButton');
-  displayUsersButton.classList.toggle('display');
-  var addUserButton = document.getElementById('addUserButton');
-  addUserButton.classList.toggle('display');
-  userList.classList.toggle('display');
   view.displayUser();
-
-  // document.getElementById('userList').innerHTML = '';
 });
-
-// display form for adding a new User
-var addUserFormButton = document.getElementById('addUserButton')
-addUserFormButton.addEventListener('click', function(event){
-  displayUsersButton.classList.toggle('display');
-  addUserButton.classList.toggle('display');
-  var formDisplay = document.getElementById('addNewUser');
-  formDisplay.classList.toggle('display');
-});
-
-// display form for adding new measurments
-var addMeasurmentsForm = document.getElementById('addMeasurementsButton')
-addMeasurmentsForm.addEventListener('click', function(event){
-  var formAddMeasurements = document.getElementById('addMeasurmentsForm');
-  var MeasurementInputDate = document.getElementById('MeasurementInputDate');
-  // MeasurementInputDate.value = new Date().toJson().slice(0,10).replace(/-/g,'/');
-  formAddMeasurements.classList.toggle('display');
-
-})
-
 
 // Submit data from Form to add a new User - Save to local storage
 var addNewProfile = document.getElementById('submitNewProfile');
@@ -387,7 +380,6 @@ addNewProfile.addEventListener('click', function(event){
 
 // Submit data from Form to add new measurments
 var saveMeasurmentButton = document.getElementById('saveMeasurmentButton')
-
 saveMeasurmentButton.addEventListener('click', function(event){
   console.log('click')
   var rowid = document.getElementById('Rowid').innerHTML;
@@ -413,17 +405,16 @@ saveMeasurmentButton.addEventListener('click', function(event){
     console.log(user);
     // }
     writeData("users", user);
+    document.getElementById("addMeasurmentsForm").reset();
   });
 });
 
 function init(){
-  var formNewUserDisplay = document.getElementById('addNewUser');
-  formNewUserDisplay.classList.toggle('display');
-  var formNewMeasurement = document.getElementById('addMeasurmentsForm');
-  formNewMeasurement.classList.toggle('display');
-  var displayUserProfile = document.getElementById('displayUserProfile');
+  view.displayUsers();
+  userList.classList.toggle('display');
   displayUserProfile.classList.toggle('display');
-
+  addNewUser.classList.toggle('display');
+  addMeasurmentsForm.classList.toggle('display');
     }
 
 init();
