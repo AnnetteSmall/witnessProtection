@@ -12,8 +12,14 @@
       </label>
       <form  id="addNewUser" >
         <div>
+          <label for="markDefaultUser">Default User:
+            <input type="checkbox" id="defaultUser" value="defaultUser"></input>
+          </label>
+        </div>
+        <div>
           <label for="newProfileName">Name:
-          <input type="text" name="newProfileName" id="newProfileName"></input>
+            <input type="text" name="newProfileName" id="newProfileName"></input>
+          </label>
         </div>
         <div>
           <label for="newProfiledob">Date of Birth
@@ -47,7 +53,7 @@
       <ul id="userList"></ul>
     </div>
 
-    <!-- Display Profile detals for User Selected -->
+    <!-- Display Profile details for User Selected or default User -->
     <div class='box'>
       <label for="UserProfile">Profile
         <button name="UserProfile" id="toggleIconUserProfile">+</button>

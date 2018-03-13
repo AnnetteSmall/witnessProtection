@@ -1,4 +1,3 @@
-
 // Toggle Users List box
 var toggleIconUserListButton = document.getElementById('toggleIconUserListButton');
 var userList = document.getElementById('userList');
@@ -20,7 +19,7 @@ toggleAddUserForm.addEventListener('click', function(event){
   addNewUser.classList.toggle('display');
 })
 
-// Toggle Add New User Form box
+// Toggle Add New measurments Form box
 var toggleAddMeasurmentsForm = document.getElementById('toggleAddMeasurmentsForm');
 var addMeasurmentsForm = document.getElementById('addMeasurmentsForm');
 toggleAddMeasurmentsForm.addEventListener('click', function(event){
@@ -193,6 +192,11 @@ var wp = {
     }
   },
   addUser: function(){
+    if (document.getElementById('defaultUser').checked === true) {
+      var fdefaultUser = 1;
+    } else {
+      var fdefaultUser = 0;
+    }
     var formProfileName = document.getElementById('newProfileName').value;
     var formdob = document.getElementById('newProfiledob').value;
     if (document.getElementById('newProfileGenderMale').checked === true){
@@ -216,7 +220,7 @@ var wp = {
     // Add calculateBMI
     // Add calcAge
     // Add calculateKcal
-    profile = {name: formProfileName, dob: formdob, gender: formGender, activity: formActivity, height: formHeight, measurements:[] };
+    profile = {defaultUser: fdefaultUser, name: formProfileName, dob: formdob, gender: formGender, activity: formActivity, height: formHeight, measurements:[] };
     writeData('users', profile);
     document.getElementById('addNewUser').style.display = 'none';
     document.getElementById('addNewUser').reset();
@@ -269,6 +273,21 @@ var wp = {
       Kcal *= 1.4
     }
     return ~~Kcal
+  },
+  defaultUser: function(){
+    readAllData('users').
+    then (function(usersData){
+      var defaultUserid = '';
+      for (var i in usersData){
+        // console.log(usersData[i].defaultUser)
+        if (usersData[i].defaultUser === 1){
+          defaultUserid = usersData[i].Rowid;
+          console.log('rowid :'+defaultUserid)
+          view.displayUser(defaultUserid)
+        }
+      }
+    });
+    // return defaultUserid ;
   }
 };
 
@@ -288,10 +307,12 @@ var view ={
         }
     });
   },
-  displayUser: function(){
+  displayUser: function(index){
     // var totalUsers = this.users.length;
       var displayProfile = document.getElementById('displayUserProfile');
-      var index = event.target.id;
+      if (!index){
+        var index = event.target.id;
+      }
       readOneData('users', parseInt(index)).
       then (function(user){
         var start = wp.startDate(user['measurements']);
@@ -398,23 +419,25 @@ saveMeasurmentButton.addEventListener('click', function(event){
     var fdate = document.getElementById('new_MeasurementInputDate').value;
     var measurements = {weight:fweight, shoulders:fshoulders, waist:fwaist, chest:fchest, hips:fhips, arm:farm, forarm:fforarm, thigh:fthigh, calf:fcalf, date:fdate};
     user['measurements'].push(measurements);
-    // if (user[measurements]){
-    //   user['measurements'].push(measurements)
-    // } else {
-    //   user['measurements'] = measurements;
-    console.log(user);
-    // }
     writeData("users", user);
     document.getElementById("addMeasurmentsForm").reset();
+    addMeasurmentsForm.classList.toggle('display');
+    view.displayUser(rowid);
   });
 });
 
 function init(){
+  // view.displayUser();
   view.displayUsers();
+  //Default users
+  wp.defaultUser();
   userList.classList.toggle('display');
   displayUserProfile.classList.toggle('display');
   addNewUser.classList.toggle('display');
   addMeasurmentsForm.classList.toggle('display');
     }
+
+
+
 
 init();
