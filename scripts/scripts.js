@@ -23,6 +23,9 @@ toggleAddUserForm.addEventListener('click', function(event){
 var toggleAddMeasurmentsForm = document.getElementById('toggleAddMeasurmentsForm');
 var addMeasurmentsForm = document.getElementById('addMeasurmentsForm');
 toggleAddMeasurmentsForm.addEventListener('click', function(event){
+  var dateNow = new Date().toISOString();
+  dateNow = dateNow.slice(0,16);
+  document.getElementById('new_MeasurementInputDate').value = dateNow;
   addMeasurmentsForm.classList.toggle('display');
 })
 
@@ -122,7 +125,7 @@ var wp = {
     var user = this.users[index].name;
     var begin = this.startDate(user);
     var end = this.lastDate(user);
-    console.log(user,begin,end)
+    // console.log(user,begin,end)
 
   },
   startDate: function(measurementsList){
@@ -282,7 +285,7 @@ var wp = {
         // console.log(usersData[i].defaultUser)
         if (usersData[i].defaultUser === 1){
           defaultUserid = usersData[i].Rowid;
-          console.log('rowid :'+defaultUserid)
+          // console.log('rowid :'+defaultUserid)
           view.displayUser(defaultUserid)
         }
       }
@@ -327,14 +330,16 @@ var view ={
             // if type is an object
             if (type === "object" ){
               var currentKey = user[key];
+
               for (var subKey in currentKey){
                 if (currentKey.hasOwnProperty(subKey)){
                   var currentMeasurements = user[key][subKey];
                   for (var measurementsKey in currentMeasurements){
                     current = document.getElementById(measurementsKey);
+                      console.log(measurementsKey);
                     if (currentMeasurements[measurementsKey] === null){
-                      current.classList.toggle('display')
-                    }else {
+                      current.classList.toggle('display');
+                    } else {
                       current.style.display = "block";
                       current.textContent = measurementsKey + ": " + currentMeasurements[measurementsKey]
                     }
@@ -373,7 +378,7 @@ var view ={
                 kcal = document.getElementById('kcal');
                 kcal.style.display = "Block";
                 kcal.textContent = "Daily Calories: " + kcalValue;
-                console.log(kcalValue);
+                // console.log(kcalValue);
 
               } else {
                 current.style.display = "block";
@@ -402,7 +407,7 @@ addNewProfile.addEventListener('click', function(event){
 // Submit data from Form to add new measurments
 var saveMeasurmentButton = document.getElementById('saveMeasurmentButton')
 saveMeasurmentButton.addEventListener('click', function(event){
-  console.log('click')
+  // console.log('click')
   var rowid = document.getElementById('Rowid').innerHTML;
   readOneData('users', parseInt(rowid)).
   then (function(user){
@@ -417,8 +422,30 @@ saveMeasurmentButton.addEventListener('click', function(event){
     var fthigh = document.getElementById('new_thigh').value;
     var fcalf = document.getElementById('new_calf').value;
     var fdate = document.getElementById('new_MeasurementInputDate').value;
-    var measurements = {weight:fweight, shoulders:fshoulders, waist:fwaist, chest:fchest, hips:fhips, arm:farm, forarm:fforarm, thigh:fthigh, calf:fcalf, date:fdate};
-    user['measurements'].push(measurements);
+    var measurements = {weight:fweight,
+      shoulders:fshoulders,
+      waist:fwaist,
+      chest:fchest,
+      hips:fhips,
+      arm:farm,
+      forarm:fforarm,
+      thigh:fthigh,
+      calf:fcalf,
+      date:fdate};
+      var newMeasurments = new Object();
+    for ( var i in measurements){
+      // console.log(measurements[i]);
+
+      if (measurements[i] != ''){
+        var key = i;
+        newMeasurments[key] = measurements[i];
+        // console.log(newMeasurments);
+      }else{
+        // console.log('empty');
+      }
+    }
+    // console.log('newMeasurments',newMeasurments);
+    user['measurements'].push(newMeasurments);
     writeData("users", user);
     document.getElementById("addMeasurmentsForm").reset();
     addMeasurmentsForm.classList.toggle('display');
