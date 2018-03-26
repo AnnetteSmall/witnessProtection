@@ -4,6 +4,9 @@ var dbPromise = idb.open('lifecoach', 3, function(db) {
     if (!db.objectStoreNames.contains('users')) {
     db.createObjectStore('users', {keyPath: 'Rowid', autoIncrement: true});
   }
+    if (!db.objectStoreNames.contains('food')) {
+    db.createObjectStore('food', {keyPath: 'Rowid', autoIncrement: true});
+  }
 
 });
 

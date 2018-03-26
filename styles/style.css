@@ -1,10 +1,16 @@
-
+* {
+  font-size: 40px;
+  font-family: fantasy;
+}
 
 button{
   margin :10px;
 }
-.display {
+/* .display {
   display: none;
+} */
+input[type=checkbox]{
+  transform: scale(3);
 }
 .box {
   border: 2px solid grey;
@@ -33,9 +39,37 @@ li> button {
   width: 100%;
   margin: 1px;
   color: #606266;
-  font-size: 20px;
+  /* font-size: 20px; */
   font-weight: bold;
 }
 form div {
   padding: 5px;
+}
+/* Bottom nav bar */
+.menu {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.menu a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  /* font-size: 17px; */
+}
+
+.menu a:hover {
+  background: #f1f1f1;
+  color: black;
+}
+
+.menu a.active {
+  background-color: #4CAF50;
+  color: white;
 }
