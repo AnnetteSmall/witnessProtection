@@ -3,6 +3,10 @@
   font-family: fantasy;
 }
 
+.toggle {
+  display: none;
+}
+
 button{
   margin :10px;
 }

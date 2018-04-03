@@ -1,3 +1,14 @@
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('serviceWorker.js')
+    .then(function () {
+      console.log('Service worker registered!');
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+};
+
 var wp = {
   users : [
     {
@@ -171,7 +182,6 @@ var wp = {
     }
   },
   addUser: function(){
-    // console.log(document.getElementById('markDefaultUser').checked);
     if (document.getElementById('markDefaultUser').checked === true) {
       var fdefaultUser = 1;
     } else {
@@ -179,22 +189,8 @@ var wp = {
     }
     var formProfileName = document.getElementById('newProfileName').value;
     var formdob = document.getElementById('newProfiledob').value;
-    if (document.getElementById('newProfileGenderMale').checked === true){
-      var formGender = document.getElementById('newProfileGenderMale').value
-    } else if (document.getElementById('newProfileGenderFemale').checked === true){
-      var formGender = document.getElementById('newProfileGenderFemale').value
-    };
-    if (document.getElementById('newProfileActivity1').checked === true){
-      var formActivity = document.getElementById('newProfileActivity1').value
-    } else if (document.getElementById('newProfileActivity2').checked === true) {
-      var formActivity = document.getElementById('newProfileActivity2').value
-    } else if (document.getElementById('newProfileActivity3').checked === true) {
-      var formActivity = document.getElementById('newProfileActivity3').value
-    } else if (document.getElementById('newProfileActivity4').checked === true) {
-      var formActivity = document.getElementById('newProfileActivity4').value
-    } else if (document.getElementById('newProfileActivity5').checked === true) {
-      var formActivity = document.getElementById('newProfileActivity5').value
-    };
+    var formGender = document.getElementById('newProfileGender').value;
+    var formActivity = document.getElementById('newProfileActivity').value;
     var formHeight = document.getElementById('newProfileHeight').value;
     // Add Startdate - Calculation
     // Add calculateBMI
@@ -226,10 +222,10 @@ var wp = {
     this.displayUser(name);
   },
   calculateBMI: function(weight, height){
-    console.log('weight: ', weight);
-    console.log('height: ', height);
+    // console.log('weight: ', weight);
+    // console.log('height: ', height);
     var bmi = weight / ((height/100) * (height/100));
-    console.log(~~bmi);
+    // console.log(~~bmi);
     return ~~bmi
   },
   calcAge: function(dateString) {
@@ -243,7 +239,7 @@ var wp = {
     // for males= 10 x (Weight in kg) + 6.25 x (Height in cm) - 5 x age + 5
     var Kcal;
     var age = this.calcAge(dob);
-    console.log(age);
+    // console.log(age);
     // console.log(age);
     if (gender == "female"){
       Kcal = (10 * weight) + (6.25 * height) - (5 * age) - 161 ;
@@ -274,6 +270,66 @@ var wp = {
       }
     });
     // return defaultUserid ;
+  },
+  searchFoodItem: function(itemName){
+    search4('food', 'name', itemName)
+    .then (function(checkExistResults){
+      // console.log('checkExists',checkExistResults);
+      if (checkExistResults){
+        console.log('Found ',itemName,' with Rowid :', checkExistResults.Rowid)
+      } else {
+        // not found so add
+        console.log('did not find ', name)
+      }
+    });
+  },
+  autocomplete: function(){
+    // var url =
+  },
+  loginOnline: function(){
+    // performaing login to API online
+    console.log('Trying to login to API online');
+
+    var formData  = new FormData();
+    // formData.append('mobileNo', document.getElementById('f_mobileNo').value);
+    // formData.append('userPassword', document.getElementById('f_password').value);
+    formData.append('mobileNo','0824659470');
+    formData.append('userPassword', 'jethro1012');
+
+    var postURL = "https://www.digitalfields.co.za/lc/api/ws1.cfc?method=login&queryformat=struct";
+
+
+        fetch(postURL, {
+          method: 'POST',
+          body: formData
+        })
+        .then(function(response) {
+          if (!response.ok) {
+            throw Error(response.statusText);
+            console.log('Login attempt UN-sucessful');
+          }
+            else {
+                console.log('good, now then ', );
+
+            }
+
+          // Read the response as json.
+          return response.json();
+        //   return response;
+        })
+        .then(function(responseAsJson) {
+            console.log(responseAsJson[0])
+            var addDataList= {HuserID: responseAsJson[0].HUSERID,
+                            currentUUID: responseAsJson[0].CURRENTUUID};
+            console.log("addDataList : ", addDataList)
+            //  addData('userProfile',addDataList);
+            // loadPageIntoDiv('divNav','nav.html');
+
+        })
+        .catch(function(error) {
+
+          console.log('Looks like there was a problem logging in: \n', error);
+        });
   }
 };
 
@@ -295,11 +351,6 @@ var view ={
     });
   },
   displayUser: function(index){
-    // var totalUsers = this.users.length;
-    // var displayProfile = document.getElementById('displayUserProfile');
-    // if (!index){
-    //   var index = event.target.id;
-    // }
     readOneData('users', parseInt(index)).
     then (function(user){
       document.getElementById('Rowid').innerHTML = index;
@@ -309,78 +360,15 @@ var view ={
       var height = user['height'];
       var profileName = document.getElementById("profileName");
       profileName.textContent = user['name'];
-      document.getElementById('weightLossValue').textContent = start[1]-end[1];;
-      document.getElementById('bmi').textContent = wp.calculateBMI(currentWeight, user['height']);
-      document.getElementById('kcal').textContent = wp.calculateKcal(currentWeight, user['height'],user['dob'],user['gender'],user['activity']);
-
-      // for (var key in user) {
-      //   if (user.hasOwnProperty(key) ) {
-      //     var type = typeof user[key];
-      //     // if type is an object
-      //     if (type === "object" ){
-      //       var currentKey = user[key];
-      //       console.log(currentKey);
-      //       for (var subKey in currentKey){
-      //         if (currentKey.hasOwnProperty(subKey)){
-      //           var currentMeasurements = user[key][subKey];
-      //           for (var measurementsKey in currentMeasurements){
-      //             current = document.getElementById(measurementsKey);
-      //               console.log(measurementsKey);
-      //             if (currentMeasurements[measurementsKey] === null){
-      //               current.classList.toggle('display');
-      //             } else {
-      //               // current.style.display = "block";
-      //               current.textContent = measurementsKey + ": " + currentMeasurements[measurementsKey]
-      //             }
-      //           }
-      //         }
-      //       }
-      //     } else {
-      //       current = document.getElementById(key);
-      //       if (key === 'Rowid'){
-      //         // console.log(key);
-      //         // current.style.display = "none";
-      //         current.textContent = user[key];
-      //       } else if (key === 'dob') {
-      //         // console.log(key);
-      //         var age = wp.calcAge(user['dob']);
-      //         // current.style.display = "block";
-      //         current.textContent = 'Age: ' + age;
-      //         startdate = document.getElementById('startdate');
-      //         // startdate.style.display = "Block";
-      //         startdate.textContent = 'Start Date: ' + start[0];
-      //         startWeight = document.getElementById('startWeight');
-      //         // startWeight.style.display = "Block";
-      //         startWeight.textContent = 'Start Weight: ' + start[1];
-      //
-      //         lastWeight = document.getElementById('lastWeight');
-      //         // lastWeight.style.display = "Block";
-      //         lastWeight.textContent = 'Last Weight: ' + end[1];
-      //         weightLoss = document.getElementById('weightLoss');
-      //         // weightLoss.style.display = "Block";
-      //         weightLoss.textContent = 'Weight Loss: ' + (start[1]-end[1]);
-      //         var bmiValue = wp.calculateBMI(end[1], height);
-      //         bmi = document.getElementById('bmi');
-      //         // bmi.style.display = 'Block';
-      //         bmi.textContent = "BMI: " + bmiValue;
-      //         var kcalValue = wp.calculateKcal(end[1], height, user['dob'],user['gender'], user['activity']);
-      //         kcal = document.getElementById('kcal');
-      //         // kcal.style.display = "Block";
-      //         kcal.textContent = "Daily Calories: " + kcalValue;
-      //         // console.log(kcalValue);
-      //
-      //       } else {
-      //         current.style.display = "block";
-      //         current.textContent = key + ": " + user[key];
-      //       }
-      //     }
-      //   }
-      // }
-
-
-
-
+      document.getElementById('weightLossValue').textContent = "Weight Loss: " + (start[1]-end[1]) + " Kg";
+      document.getElementById('bmi').textContent = "BMI: " + (wp.calculateBMI(currentWeight, user['height']));
+      document.getElementById('kcal').textContent = "Kcal: " + (wp.calculateKcal(currentWeight, user['height'],user['dob'],user['gender'],user['activity']));
     });
+  },
+  togglediv: function(element){
+    console.log('Toggle element : ',element)
+    element.classList.toggle('toggle');
+
   }
 };
 
@@ -389,9 +377,8 @@ var userList = document.getElementById('userList');
 userList.addEventListener('click', function(event){
   var rowid = event.target.id;
   view.displayUser(rowid);
+  // view.togglediv(document.getElementById('displayUserProfile'));
 });
-
-
 
 // Submit data from Form to add a new User - Save to local storage
 var addNewProfile = document.getElementById('submitNewProfile');
@@ -435,45 +422,88 @@ saveMeasurmentButton.addEventListener('click', function(event){
     user['weight'].push(newWeightCaptured);
     writeData("users", user);
     document.getElementById("addMeasurmentsForm").reset();
+    wp.autocomplete();
     // addMeasurmentsForm.classList.toggle('display');
     view.displayUser(rowid);
+    view.togglediv(document.getElementById("toggleAddMeasurmentsForm"));
   });
 });
+
 // Submit data from Form to add new food items
 var saveFoodItemButton = document.getElementById('saveFoodItemButton');
 saveFoodItemButton.addEventListener('click', function(event){
   var foodToAdd = document.getElementById('formFoodItemToAdd').value;
-  foodToAdd = foodToAdd.replace(/\s+/g, '');
-  var url = "http://api.nutritionix.com/v1_1/search/"+foodToAdd+"?results=0:20&fields=nf_total_carbohydrate,nf_sugars,nf_dietary_fiber,item_name,brand_name,item_id,nf_calories&appId=d3a8bee3&appKey=fb2b5f577a67a7f542ec03297b29b372"
+  foodToAdd = foodToAdd.replace(/\s+/g, '%20');
+  var url = "https://api.nutritionix.com/v1_1/search/"+ foodToAdd +"?brand_id=513fbc1283aa2dc80c000053&results=0%3A50&cal_min=0&cal_max=50000&fields=item_name%2Cnf_calories%2Cbrand_name&appId=ff882c0d&appKey=8c1b421a227f561199e051212e62c7b7"
+  // var url = "http://api.nutritionix.com/v1_1/search/"+foodToAdd+"?results=0:20&fields=*&appId=ff882c0d&appKey=8c1b421a227f561199e051212e62c7b7"
   fetch(url)
   .then((resp)=>resp.json())
   .then(function(data){
-    console.log(data.hits);
-    data.hits.forEach(myFunction);
+    // console.log(data.hits);
+    // data.hits.forEach(myFunction);
+    console.log(foodToAdd);
+    newItem = {name: foodToAdd};
+    writeData('food',newItem);
+    view.togglediv(document.getElementById('toggleAddFoodItemForm'));
   });
 
   function myFunction(item, index){
     var listFood = document.getElementById('listFood');
-
     console.log('item: ' + item.fields.item_name + '*-* Brand: ' + item.fields.brand_name);
     // listFood.innerHTML = listFood['fields'][item_name].innerHTML + item + "<br>";
   }
-
-
-
   // food = {name: foodToAdd}
   // writeData("food",food);
   document.getElementById('addFoodItemForm').reset();
+  // view.togglediv(document.getElementById('toggleAddFoodItemForm'));
   });
 
+// select menu option to show input form/fields fot Food
+var showAddFoodItemForm = document.getElementById('showAddFoodItemForm');
+showAddFoodItemForm.addEventListener('click', function(){
+  var showBox = document.getElementById('toggleAddFoodItemForm');
+  view.togglediv(showBox);
+});
+
+
+// select menu option for measurments and show input form
+var showAddMeasurementForm = document.getElementById('showAddMeasurementForm');
+showAddMeasurementForm.addEventListener('click', function(){
+  // console.log('show measurements', showAddMeasurementForm);
+  var showMeasurementsBox = document.getElementById('toggleAddMeasurmentsForm');
+  // console.log(showBox);
+  view.togglediv(showMeasurementsBox);
+});
+
+
+var showUsersList = document.getElementById('showUsersList');
+showUsersList.addEventListener('click', function(){
+  var toggleList = document.getElementById('userListBox');
+  view.togglediv(toggleList);
+});
+// console.log(showUsersList);
+// showUsersList.addEventListener('click', function(event){
+//   showBox = document.getElementById('userListBox');
+//   console.log(showBox);
+//   console.log(showBox.classList);
+//   if (showBox.classList = 'toggle'){
+//     view.togglediv(showBox);
+//   }
+//
+// });
+
+var logIn = document.getElementById('logInButton');
+logIn.addEventListener('click', function(){
+  wp.loginOnline();
+})
+
 function init(){
+  wp.loginOnline();
   view.displayUsers();
   //Default users
   wp.defaultUser();
   wp.dateTimeNow();
-    }
-
-
-
+  view.togglediv(document.getElementById('userListBox'));
+}
 
 init();

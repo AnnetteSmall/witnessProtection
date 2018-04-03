@@ -4,22 +4,19 @@
   </head>
 
   <body>
-
-
-    <div >
-      <div  >
-        <!-- <label for="usersToggle">Users -->
-        <!-- <button name='usersToggle' id="toggleIconUserListButton">+</button></label> -->
+    <div id="login" class="toggle">
+      <input type="number" name="mobileNo" id="mobileNo" placeholder="mobileNo">
+      <input type="password" name="password" id="password" placeholder="password">
+      <button type="button" id="logInButton">Log In</button>
+    </div>
 
 <!-- Build list of users from Local storage here -->
-        <ul id="userList" name="userList"></ul>
+      <div id="userListBox" class="" >
+        <ul id="userList" name="userList" ></ul>
       </div>
 
-      <!-- Add new Profile form -->
-      <div id="toggleAddUserForm" class='box'>
-        <label for="toggleAddUserForm">Add User
-          <button id="toggleAddUserForm">+</button>
-        </label>
+<!-- Add new Profile form -->
+      <div id="toggleAddUserForm" class="toggle">
         <form  id="addNewUser" >
           <div>
             <label for="markDefaultUser">Default User:
@@ -36,179 +33,89 @@
             <input type="date" name="newProfiledob" id="newProfiledob"></input>
           </div>
           <div>
-            <label for="newProfileGender">Gender</label><br>
-            <input type="radio" name="newProfileGender" id="newProfileGenderMale" value="male">Male<br>
-            <input type="radio" name="newProfileGender" id="newProfileGenderFemale" value="female">Female<br>
+            <label for="newProfileGender">Gender
+              <select name="newProfileGender" id="newProfileGender" >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </label><br>
           </div>
           <div>
-            <label for="newProfileActivity">Activity</label><br>
-            <input type="radio" name="newProfileActivity" id="newProfileActivity1" value="sedentary">Sedentary<br>
-            <input type="radio" name="newProfileActivity" id="newProfileActivity2" value="lightlyActive">Lightly Active<br>
-            <input type="radio" name="newProfileActivity" id="newProfileActivity3" value="moderatelyActive">Moderately Active<br>
-            <input type="radio" name="newProfileActivity" id="newProfileActivity4" value="veryActive">Very Active<br>
-            <input type="radio" name="newProfileActivity" id="newProfileActivity5" value="extraActive">Extra Active<br>
+            <label for="newProfileActivity">Activity
+              <select name="newProfileActivity" id="newProfileActivity">
+                <option name="newProfileActivity"  value="sedentary">Sedentary</option>
+                <option name="newProfileActivity"  value="lightlyActive">Lightly Active</option>
+                <option name="newProfileActivity"  value="moderatelyActive">Moderately Active</option>
+                <option name="newProfileActivity"  value="veryActive">Very Active</option>
+                <option name="newProfileActivity"  value="extraActive">Extra Active</option>
+              </select>
+            </label><br>
           </div>
           <div>
-            <label for="newProfileHeight">Height</label><br>
-            <input type="number" name="newProfileHeight" id="newProfileHeight" > Meter
+            <label for="newProfileHeight">Height
+            <input type="number" name="newProfileHeight" id="newProfileHeight" > cm</label><br>
           </div>
           <button type="button" id="submitNewProfile">Submit</button>
         </form>
       </div>
-    </div>
 
 
 
-    <!-- Display Profile details for User Selected or default User -->
-    <div class='box'>
-      <label for="UserProfile">Profile
-        <button name="UserProfile" id="toggleIconUserProfile">+</button>
-      </label>
-      <div id='displayUserProfile' >
-        <!-- <button id='home'>Home</button> -->
-        <h1 id="profileName">Name<h1>
-        <!-- <h3>Profile</h3> -->
-        <p id='Rowid' ></p>
-        <!-- <div id="name" >
-          <h5>name</h5>
-        </div> -->
-        <!-- <div id="age" >
-          <h5>age</h5>
-        </div> -->
-        <!-- <div id="dob" >
-          <h5>dob</h5>
-        </div> -->
-        <!-- <div id="gender" >
-          <h5 >gender</h5>
-        </div> -->
-        <!-- <div id="startdate" >
-          <h5>startdate</h5>
-        </div> -->
-        <!-- <div id="startWeight" >
-          <h5>startWeight</h5>
-        </div> -->
-        <!-- <div id="lastWeight" >
-          <h5>lastWeight</h5>
-        </div> -->
-        <div id="weightLoss" class="row">
-          <p>Weight Loss: </p>
-          <p id="weightLossValue"></p>
-        </div>
-        <!-- <div id="activity" >
-          <h5>activity</h5>
-        </div> -->
-        <!-- <div id="height" >
-          <h5>height</h5>
-        </div> -->
-        <div id="bmi" >
-          <h5>bmi</h5>
-        </div>
-        <div id="kcal" >
-          <h5>kcal</h5>
-        </div>
 
-        <!-- <h3>Measurements</h3>
-        <div id="weight" style="display:none;">
-          <h5 >weight</h5>
-        </div>
-        <div id="shoulders" >
-          <h5>shoulders</h5>
-        </div>
-        <div id="waist" class='display'>
-          <h5>waist</h5>
-        </div>
-        <div id="chest" >
-          <h5>chest</h5>
-        </div>
-        <div id="hips" >
-          <h5>hips</h5>
-        </div>
-        <div id="arm" >
-          <h5>arm</h5>
-        </div>
-        <div id="forarm" >
-          <h5>forarm</h5>
-        </div>
-        <div id="thigh" >
-          <h5>thigh</h5>
-        </div>
-        <div id="calf" >
-          <h5>calf</h5>
-        </div>
-        <div id="date" >
-          <h5>date</h5>
-        </div> -->
+<!-- Display Profile details for User Selected or default User -->
+    <div id='displayUserProfile' class=''>
 
-        <h1 id="meal" style="display:none">Meals</h1>
-        <!-- <h2>Breakfast</h2>
-        category: "Breakfast",
-        <h5 style="display:none">Food</h5>: ["Egg","Bacon", "Mayo"],
-        <h5>Drink</h5>: ["Coffee", "Water"],
-        <h2>Lunch</h2>category: "Lunch",
-        Food: ["Coleslaw","Chicken Breast", "Chicken wing"],
-        Drink: ["Coke Zero", "Water"],
-        <h2>Dinner</<h2>
-        <h2>Snack</h2>
-        <h2>Cheat</h2> -->
-
-        <!-- Add Measurements form -->
-        <div class="box">
-          <label for="toggleAddMeasurmentsForm">New Measurements
-            <button name="addMeasurmentsButton" id="toggleAddMeasurmentsForm">+</button>
-          </label>
-          <form id="addMeasurmentsForm" name="addMeasurmentsForm" action=>
-            <div id="fweight">
-              <input type="number" id="new_weight" name="weight" placeholder="Weight in KG">
-            </div>
-            <!-- <div id="fshoulders">
-              <input type="number" id="new_shoulders" name="shoulders" placeholder="Shoulder in cm">
-            </div>
-            <div id="fwaist">
-              <input type="number" id="new_waist" name="waist" placeholder="Waist in cm">
-            </div>
-            <div>
-              <input type="number" id="new_chest" name="chest" placeholder="chest in cm">
-            </div>
-            <div>
-              <input type="number" id="new_hips" name="hips" placeholder="hips in cm">
-            </div>
-            <div>
-              <input type="number" id="new_upperArm" name="upperArm" placeholder="Upper Arm in cm">
-            </div>
-            <div>
-              <input type="number" id="new_forarm" name="forarm" placeholder="Forarm in cm">
-            </div>
-            <div>
-              <input type="number" id="new_thigh" name="thigh" placeholder="Thigh in cm">
-            </div>
-            <div>
-              <input type="number" id="new_calf" name="calf" placeholder="Calf in cm">
-            </div> -->
-            <div>
-              <input type="datetime-local" name="date" id="new_MeasurementInputDate">
-            </div>
-            <button  type='button' id="saveMeasurmentButton">Save</button>
-          </form>
-        </div>
-
-        <div class="box">
-          <form id="addFoodItemForm" name="addFoodItemForm">
-            <input id="formFoodItemToAdd" type="text" placeholder="Food Name">
-            <!-- <input type="number" id="formAmount" value="" placeholder="Amount">
-            <select id="formMeasure" name="" >
-              <option id="" value="gram">gram</option>
-              <option value="kilogram">kilogram</option>
-              <option value="ml">ml</option>
-              <option value="each">each</option>
-            </select>
-            <div> -->
-              <button  type='button' id="saveFoodItemButton">Save</button>
-            </div>
-          </form>
-          <div id="listFood" ></div>
-        </div>
+      <div >
+        <p id="profileName"></p>
       </div>
+
+      <p id='Rowid' style="display:none;"></p>
+
+      <div id="weightLoss" class="row">
+        <p id="weightLossValue"></p>
+      </div>
+
+      <div>
+        <p id="bmi"></p>
+      </div>
+
+      <div>
+        <p id="kcal"></p>
+      </div>
+
     </div>
+
+
+
+<!-- Add Measurements form -->
+    <div class="toggle" id="toggleAddMeasurmentsForm">
+      <form id="addMeasurmentsForm" name="addMeasurmentsForm" action=>
+        <div id="fweight">
+          <input type="number" id="new_weight" name="weight" placeholder="Weight in KG">
+          <input type="datetime-local" name="date" id="new_MeasurementInputDate">
+        </div>
+
+        <button  type='button' id="saveMeasurmentButton">Save</button>
+      </form>
+    </div>
+
+<!-- Add food form -->
+    <div class="toggle" id="toggleAddFoodItemForm">
+      <form id="addFoodItemForm" name="addFoodItemForm" class="display">
+        <input id="formFoodItemToAdd" type="text" placeholder="Food Name">
+        <button  type='button' id="saveFoodItemButton">Save</button>
+      </form>
+    </div>
+
+
+
+
+    <div class="menu">
+      <div id="showUsersList"><a  href="#userList">Users</a></div>
+      <div id="showAddMeasurementForm"><a  href="#addMeasurmentsForm">Measurements</a></div>
+      <div id="showAddFoodItemForm"><a  href="#addFoodItemForm">Food</a></div>
+    </div>
+
 
 
 
@@ -216,13 +123,17 @@
     <script src="scripts/idb.js"></script>
     <script src="scripts/DAO.js"></script>
     <script src="scripts/scripts.js"></script>
+    <scripts src="scripts/login.js"></scripts>
 
-  </body>
-  <footer>
-    <div class="menu">
-      <a id="showUsersList" href="#userList">Users</a>
-      <a href="#addMeasurmentsForm">Measurements</a>
-      <a href="#addFoodItemForm">Food</a>
-    </div>
-  </footer>
+<!--Upload  -->
+<!-- <script src="/lc/web/scripts/idb.js"></script>
+<script src="/lc/web/scripts/DAO.js"></script>
+<script src="/lc/web/scripts/scripts.js"></script>
+<scripts src="/lc/web/scripts/login.js"></scripts> -->
+
+    </body>
+
+
+
+
 </html>

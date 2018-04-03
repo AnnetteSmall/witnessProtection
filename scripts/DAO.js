@@ -2,10 +2,13 @@
 var dbPromise = idb.open('lifecoach', 3, function(db) {
 
     if (!db.objectStoreNames.contains('users')) {
-    db.createObjectStore('users', {keyPath: 'Rowid', autoIncrement: true});
+    var myObjectStore = db.createObjectStore('users', {keyPath: 'Rowid', autoIncrement: true});
+
+    myObjectStore.createIndex('name','name');
   }
     if (!db.objectStoreNames.contains('food')) {
-    db.createObjectStore('food', {keyPath: 'Rowid', autoIncrement: true});
+    var foodObjectStore = db.createObjectStore('food', {keyPath: 'Rowid', autoIncrement: true});
+    foodObjectStore.createIndex('name','name')
   }
 
 });
@@ -55,4 +58,17 @@ function dataURItoBlob(dataURI) {
   }
   var blob = new Blob([ab], {type: mimeString});
   return blob;
+}
+function search4(st,key, data) {
+  return dbPromise
+    .then(function(db) {
+      console.log('trying');
+      var tx = db.transaction(st, 'readonly');
+      var store = tx.objectStore(st);
+      var descIndex = store.index(key);
+
+      var ee = descIndex.get(data) // = e => console.log('here1:',e.target.result);
+   return ee
+
+    });
 }
