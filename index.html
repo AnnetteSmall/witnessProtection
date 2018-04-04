@@ -16,7 +16,7 @@
       </div>
 
 <!-- Add new Profile form -->
-      <div id="toggleAddUserForm" class="toggle">
+      <div name="addNewUserForm" id="toggleAddUserForm" class="toggle">
         <form  id="addNewUser" >
           <div>
             <label for="markDefaultUser">Default User:
@@ -59,9 +59,6 @@
         </form>
       </div>
 
-
-
-
 <!-- Display Profile details for User Selected or default User -->
     <div id='displayUserProfile' class=''>
 
@@ -85,8 +82,6 @@
 
     </div>
 
-
-
 <!-- Add Measurements form -->
     <div class="toggle" id="toggleAddMeasurmentsForm">
       <form id="addMeasurmentsForm" name="addMeasurmentsForm" action=>
@@ -98,6 +93,26 @@
         <button  type='button' id="saveMeasurmentButton">Save</button>
       </form>
     </div>
+
+<!-- Track food eaten -->
+<div id="toggleFoodEatenForm" class="toggle">
+  <form id="AddFoodEatenForm">
+    <label for="FoodEaten">Food:
+      <select name="FoodEaten" id="FoodEatenSelect" >
+
+      </select>
+      <input type="number" id="formQty" placeholder="Quantity">
+      <select name="formUOM" id="formUOM">
+        <option value="ml">ml</option>
+        <option value="gram">g</option>
+        <option value="each">Each</option>
+      </select>
+    </label>
+    <input type="datetime-local" name="date" id="new_FoodInputDate">
+    <button type="button" id="saveFoodEatenButton">Submit</button>
+
+  </form>
+</div>
 
 <!-- Add food form -->
     <div class="toggle" id="toggleAddFoodItemForm">
@@ -111,9 +126,11 @@
 
 
     <div class="menu">
+      <div id="showAddNewUser"><a href="#addNewUserForm">New User</a></div>
       <div id="showUsersList"><a  href="#userList">Users</a></div>
       <div id="showAddMeasurementForm"><a  href="#addMeasurmentsForm">Measurements</a></div>
       <div id="showAddFoodItemForm"><a  href="#addFoodItemForm">Food</a></div>
+      <div id="showFoodOptionsSelect"><a href="#toggleFoodEatenForm">Track Meals</a></div>
     </div>
 
 
@@ -121,6 +138,7 @@
 
     <!-- Javascript imports -->
     <script src="scripts/idb.js"></script>
+    <scripts src="apiFatSecretCalls.js"></scripts>
     <script src="scripts/DAO.js"></script>
     <script src="scripts/scripts.js"></script>
     <scripts src="scripts/login.js"></scripts>

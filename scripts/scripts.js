@@ -144,12 +144,15 @@ var wp = {
     }
     return [max, lastWeight]
   },
-  dateTimeNow: function(){
+  dateTimeNow: function(id){
     // Pre determain today's date time for date picker
     var dateNow = new Date().toISOString();
     dateNow = dateNow.slice(0,16);
-    var datePicker = document.getElementById('new_MeasurementInputDate');
+    var datePicker = document.getElementById(id);
+    console.log(dateNow);
+    console.log(datePicker);
     datePicker.value = dateNow;
+    console.log(datePicker.value);
   },
   displayUser: function(name){
     totalUsers = this.users.length;
@@ -365,6 +368,22 @@ var view ={
       document.getElementById('kcal').textContent = "Kcal: " + (wp.calculateKcal(currentWeight, user['height'],user['dob'],user['gender'],user['activity']));
     });
   },
+  displayFoodOptions: function(){
+    readAllData('food').
+    then(function(listFood){
+      for (var i in listFood){
+        var foodItem = listFood[i].name;
+        var foodSelect = document.getElementById('FoodEatenSelect');
+        var foodOption = document.createElement('option');
+        foodOption.value = foodItem;
+        foodOption.id = listFood.Rowid;
+        foodOptionDisplay = foodItem.charAt(0).toUpperCase() + foodItem.slice(1).toLowerCase();
+        foodOption.textContent = foodOptionDisplay;
+        foodSelect.appendChild(foodOption);
+
+      }
+    });
+  },
   togglediv: function(element){
     console.log('Toggle element : ',element)
     element.classList.toggle('toggle');
@@ -395,34 +414,14 @@ saveMeasurmentButton.addEventListener('click', function(event){
   then (function(user){
     // console.log(user);
     var fweight = document.getElementById('new_weight').value;
-    // var fshoulders = document.getElementById('new_shoulders').value;
-    // var fwaist = document.getElementById('new_waist').value;
-    // var fchest = document.getElementById('new_chest').value;
-    // var fhips = document.getElementById('new_hips').value;
-    // var farm = document.getElementById('new_upperArm').value;
-    // var fforarm = document.getElementById('new_forarm').value;
-    // var fthigh = document.getElementById('new_thigh').value;
-    // var fcalf = document.getElementById('new_calf').value;
     var fdate = document.getElementById('new_MeasurementInputDate').value;
     var weightCaptured = {weight:fweight, date:fdate};
     var newWeightCaptured = new Object(weightCaptured);
-
-    // for ( var i in measurements){
-    //   // console.log(measurements[i]);
-    //
-    //   if (measurements[i] != ''){
-    //     var key = i;
-    //     newMeasurments[key] = measurements[i];
-    //     // console.log(newMeasurments);
-    //   }else{
-    //     // console.log('empty');
-    //   }
-    // }
     console.log('newWeight',newWeightCaptured);
     user['weight'].push(newWeightCaptured);
     writeData("users", user);
     document.getElementById("addMeasurmentsForm").reset();
-    wp.autocomplete();
+    wp.dateTimeNow('new_MeasurementInputDate');
     // addMeasurmentsForm.classList.toggle('display');
     view.displayUser(rowid);
     view.togglediv(document.getElementById("toggleAddMeasurmentsForm"));
@@ -458,7 +457,7 @@ saveFoodItemButton.addEventListener('click', function(event){
   // view.togglediv(document.getElementById('toggleAddFoodItemForm'));
   });
 
-// select menu option to show input form/fields fot Food
+// select menu option to show input form/fields for Food
 var showAddFoodItemForm = document.getElementById('showAddFoodItemForm');
 showAddFoodItemForm.addEventListener('click', function(){
   var showBox = document.getElementById('toggleAddFoodItemForm');
@@ -481,16 +480,45 @@ showUsersList.addEventListener('click', function(){
   var toggleList = document.getElementById('userListBox');
   view.togglediv(toggleList);
 });
-// console.log(showUsersList);
-// showUsersList.addEventListener('click', function(event){
-//   showBox = document.getElementById('userListBox');
-//   console.log(showBox);
-//   console.log(showBox.classList);
-//   if (showBox.classList = 'toggle'){
-//     view.togglediv(showBox);
-//   }
-//
-// });
+
+var showSelectFoodOptions = document.getElementById('showFoodOptionsSelect');
+showFoodOptionsSelect.addEventListener('click', function(){
+  view.displayFoodOptions();
+  var toggleFoodEatenForm = document.getElementById('toggleFoodEatenForm');
+  view.togglediv(toggleFoodEatenForm);
+  var datePicker = document.getElementById('new_FoodInputDate');
+  wp.dateTimeNow('new_FoodInputDate');
+});
+
+var saveFoodEatenButton = document.getElementById('saveFoodEatenButton');
+saveFoodEatenButton.addEventListener('click', function(){
+  var rowid = Rowid.innerHTML;
+  readOneData('users', parseInt(rowid)).
+  then(function(user){
+
+    var formFood = document.getElementById('FoodEatenSelect').value;
+    var formQty = document.getElementById('formQty').value;
+    var formUOM = document.getElementById('formUOM').value;
+    var formDate = document.getElementById('new_FoodInputDate').value;
+    var Meal = {food:formFood,qty:formQty,uom:formUOM, logDate: formDate};
+    var newFood = new Object(Meal);
+    if (user.food){
+        user['food'].push(newFood);
+    }else{
+      user.food = [new Object(newFood)];
+    };
+    writeData("users", user);
+    document.getElementById("AddFoodEatenForm").reset();
+    wp.dateTimeNow('new_FoodInputDate');
+    view.togglediv(document.getElementById("toggleFoodEatenForm"));
+  });
+})
+
+var showAddNewUser = document.getElementById('showAddNewUser');
+showAddNewUser.addEventListener('click', function(){
+  var toggleAddUserForm = document.getElementById('toggleAddUserForm');
+  view.togglediv(toggleAddUserForm);
+});
 
 var logIn = document.getElementById('logInButton');
 logIn.addEventListener('click', function(){
@@ -502,8 +530,16 @@ function init(){
   view.displayUsers();
   //Default users
   wp.defaultUser();
-  wp.dateTimeNow();
+  wp.dateTimeNow('new_MeasurementInputDate');
   view.togglediv(document.getElementById('userListBox'));
+
+  rest.post(fatSecretRestUrl, {
+    data: reqObj,
+  }).on('complete', function(data, response) {
+    console.log(response);
+    console.log("DATA: " + data + "\n");
+  });
+
 }
 
 init();
