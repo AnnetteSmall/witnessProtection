@@ -4,6 +4,7 @@
   </head>
 
   <body>
+<!-- Login -->
     <div id="login" class="toggle">
       <input type="number" name="mobileNo" id="mobileNo" placeholder="mobileNo">
       <input type="password" name="password" id="password" placeholder="password">
@@ -11,53 +12,53 @@
     </div>
 
 <!-- Build list of users from Local storage here -->
-      <div id="userListBox" class="" >
-        <ul id="userList" name="userList" ></ul>
-      </div>
+    <div id="userListBox" class="" >
+      <ul id="userList" name="userList" ></ul>
+    </div>
 
 <!-- Add new Profile form -->
-      <div name="addNewUserForm" id="toggleAddUserForm" class="toggle">
-        <form  id="addNewUser" >
-          <div>
-            <label for="markDefaultUser">Default User:
-              <input type="checkbox" id="markDefaultUser" ></input>
-            </label>
-          </div>
-          <div>
-            <label for="newProfileName">Name:
-              <input type="text" name="newProfileName" id="newProfileName"></input>
-            </label>
-          </div>
-          <div>
-            <label for="newProfiledob">Date of Birth
-            <input type="date" name="newProfiledob" id="newProfiledob"></input>
-          </div>
-          <div>
-            <label for="newProfileGender">Gender
-              <select name="newProfileGender" id="newProfileGender" >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            </label><br>
-          </div>
-          <div>
-            <label for="newProfileActivity">Activity
-              <select name="newProfileActivity" id="newProfileActivity">
-                <option name="newProfileActivity"  value="sedentary">Sedentary</option>
-                <option name="newProfileActivity"  value="lightlyActive">Lightly Active</option>
-                <option name="newProfileActivity"  value="moderatelyActive">Moderately Active</option>
-                <option name="newProfileActivity"  value="veryActive">Very Active</option>
-                <option name="newProfileActivity"  value="extraActive">Extra Active</option>
-              </select>
-            </label><br>
-          </div>
-          <div>
-            <label for="newProfileHeight">Height
-            <input type="number" name="newProfileHeight" id="newProfileHeight" > cm</label><br>
-          </div>
-          <button type="button" id="submitNewProfile">Submit</button>
-        </form>
-      </div>
+    <div name="addNewUserForm" id="toggleAddUserForm" class="toggle">
+      <form  id="addNewUser" >
+        <div>
+          <label for="markDefaultUser">Default User:
+            <input type="checkbox" id="markDefaultUser" ></input>
+          </label>
+        </div>
+        <div>
+          <label for="newProfileName">Name:
+            <input type="text" name="newProfileName" id="newProfileName"></input>
+          </label>
+        </div>
+        <div>
+          <label for="newProfiledob">Date of Birth
+          <input type="date" name="newProfiledob" id="newProfiledob"></input>
+        </div>
+        <div>
+          <label for="newProfileGender">Gender
+            <select name="newProfileGender" id="newProfileGender" >
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </label><br>
+        </div>
+        <div>
+          <label for="newProfileActivity">Activity
+            <select name="newProfileActivity" id="newProfileActivity">
+              <option name="newProfileActivity"  value="sedentary">Sedentary</option>
+              <option name="newProfileActivity"  value="lightlyActive">Lightly Active</option>
+              <option name="newProfileActivity"  value="moderatelyActive">Moderately Active</option>
+              <option name="newProfileActivity"  value="veryActive">Very Active</option>
+              <option name="newProfileActivity"  value="extraActive">Extra Active</option>
+            </select>
+          </label><br>
+        </div>
+        <div>
+          <label for="newProfileHeight">Height
+          <input type="number" name="newProfileHeight" id="newProfileHeight" > cm</label><br>
+        </div>
+        <button type="button" id="submitNewProfile">Submit</button>
+      </form>
+    </div>
 
 <!-- Display Profile details for User Selected or default User -->
     <div id='displayUserProfile' class=''>
@@ -95,24 +96,24 @@
     </div>
 
 <!-- Track food eaten -->
-<div id="toggleFoodEatenForm" class="toggle">
-  <form id="AddFoodEatenForm">
-    <label for="FoodEaten">Food:
-      <select name="FoodEaten" id="FoodEatenSelect" >
+    <div id="toggleFoodEatenForm" class="toggle">
+      <form id="AddFoodEatenForm">
+        <label for="FoodEaten">Food:
+          <select name="FoodEaten" id="FoodEatenSelect" >
 
-      </select>
-      <input type="number" id="formQty" placeholder="Quantity">
-      <select name="formUOM" id="formUOM">
-        <option value="ml">ml</option>
-        <option value="gram">g</option>
-        <option value="each">Each</option>
-      </select>
-    </label>
-    <input type="datetime-local" name="date" id="new_FoodInputDate">
-    <button type="button" id="saveFoodEatenButton">Submit</button>
+          </select>
+          <input type="number" id="formQty" placeholder="Quantity">
+          <select name="formUOM" id="formUOM">
+            <option value="ml">ml</option>
+            <option value="gram">g</option>
+            <option value="each">Each</option>
+          </select>
+        </label>
+        <input type="datetime-local" name="date" id="new_FoodInputDate">
+        <button type="button" id="saveFoodEatenButton">Submit</button>
 
-  </form>
-</div>
+      </form>
+    </div>
 
 <!-- Add food form -->
     <div class="toggle" id="toggleAddFoodItemForm">
@@ -122,9 +123,7 @@
       </form>
     </div>
 
-
-
-
+<!-- Naigation Menu -->
     <div class="menu">
       <div id="showAddNewUser"><a href="#addNewUserForm">New User</a></div>
       <div id="showUsersList"><a  href="#userList">Users</a></div>
@@ -133,25 +132,18 @@
       <div id="showFoodOptionsSelect"><a href="#toggleFoodEatenForm">Track Meals</a></div>
     </div>
 
-
-
-
-    <!-- Javascript imports -->
+<!-- Javascript imports -->
     <script src="scripts/idb.js"></script>
-    <scripts src="apiFatSecretCalls.js"></scripts>
+    <script src="apiFatSecretCalls.js"></script>
     <script src="scripts/DAO.js"></script>
     <script src="scripts/scripts.js"></script>
-    <scripts src="scripts/login.js"></scripts>
+    <script src="scripts/login.js"></script>
 
 <!--Upload  -->
-<!-- <script src="/lc/web/scripts/idb.js"></script>
-<script src="/lc/web/scripts/DAO.js"></script>
-<script src="/lc/web/scripts/scripts.js"></script>
-<scripts src="/lc/web/scripts/login.js"></scripts> -->
+    <!-- <script src="/lc/web/scripts/idb.js"></script>
+    <script src="/lc/web/scripts/DAO.js"></script>
+    <script src="/lc/web/scripts/scripts.js"></script>
+    <scripts src="/lc/web/scripts/login.js"></scripts> -->
 
-    </body>
-
-
-
-
+  </body>
 </html>
