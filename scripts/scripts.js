@@ -9,11 +9,11 @@ if ('serviceWorker' in navigator) {
     });
 };
 
+
 var wp = {
   calcWeightLoss : function(startWeight, endWeight){
     var loss = startWeight-endWeight;
     return loss
-
   },
   startDate: function(measurementsList){
     var totalEntries = measurementsList.length;
