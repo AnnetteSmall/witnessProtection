@@ -1,13 +1,13 @@
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .register('serviceWorker.js')
-    .then(function () {
-      console.log('Service worker registered!');
-    })
-    .catch(function(err) {
-      console.log(err);
-    });
-};
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker
+//     .register('serviceWorker.js')
+//     .then(function () {
+//       console.log('Service worker registered!');
+//     })
+//     .catch(function(err) {
+//       console.log(err);
+//     });
+// };
 
 
 var wp = {
@@ -170,6 +170,109 @@ var wp = {
     .catch(function(error) {
       // console.log('Looks like there was a problem logging in: \n', error);
     });
+  },
+  createNode: function(data){
+    for (var i = 0; i < data.length; i++){
+      var food = data[i].food_name;
+      var foodUL = document.getElementById('foodList');
+      var foodLi = document.createElement('li');
+      foodLi.id = data[i].food_id;
+      var foodButton = document.createElement('Button');
+      foodButton.id = "foodAddSelectButton";
+      foodButton.textContent = food;
+      var fooddata = data[i];
+      foodButton.onclick = function(data){
+        id = data.target.parentNode.id;
+        var idurl = 'http://lifecoach.digitalfields.co.za/food/get/id?id='+id;
+        fetch(idurl)
+        .then((resp)=>resp.json())
+        .then(function(data){
+          var data = data[0];
+          console.log(data);
+          food = {name: data.food_name, id: data.food_id, serving: data.food_serving, carbs: data.food_carbs, protein: data.food_protein, fat:data.food_fat, calories:data.food_calories, type: data.food_type}
+          writeData("food", food);
+          while (foodUL.hasChildNodes()){
+            foodUL.removeChild(foodUL.firstChild);
+          }
+          var card = wp.createItemCard(food);
+          var display = document.getElementById('displayFoodItem');
+
+          display.appendChild(card);
+        })
+      }
+      foodLi.appendChild(foodButton);
+      foodUL.appendChild(foodLi)
+      }
+  },
+  createItemCard:function(food){
+    console.log(food);
+    var foodCard = document.createElement('div');
+    foodCard.className = 'foodCard';
+    var heading = document.createElement('h4');
+    heading.textContent = food.name;
+    var desc = document.createElement('p');
+    desc.innerHTML = 'Serving: '+food.serving;
+    var type = document.createElement('p');
+    type.innerHTML = 'Type : '+food.type;
+    var cal = document.createElement('p');
+    cal.innerHTML = 'Calories: '+food.calories;
+    var prot = document.createElement('p');
+    prot.innerHTML = 'Protein: '+food.protein;
+    var carb = document.createElement('p');
+    carb.innerHTML = 'Carbs: '+food.carbs;
+    var fat = document.createElement('p');
+    fat.innerHTML = 'Fat: '+food.fat;
+    var mealtype = document.createElement('select');
+    var mealPlaceholder = document.createElement('option');
+    mealPlaceholder.textContent = 'Select meal';
+    mealtype.appendChild(mealPlaceholder);
+    var breakfast = document.createElement('option');
+    breakfast.value = 'breakfast';
+    breakfast.textContent = 'Breakfast';
+    mealtype.appendChild(breakfast);
+    var lunch = document.createElement('option');
+    lunch.value = 'lunch';
+    lunch.textContent = 'Lunch';
+    mealtype.appendChild(lunch);
+    var dinner = document.createElement('option');
+    dinner.value = 'dinner';
+    dinner.textContent = 'Dinner';
+    mealtype.appendChild(dinner);
+
+    var servingsize = document.createElement('select');
+    var servingPlaceholder = document.createElement('option');
+    servingPlaceholder.textContent = 'Serving size';
+    servingsize.appendChild(servingPlaceholder);
+    var half = document.createElement('option');
+    half.value = 0.5;
+    half.textContent = '1/2';
+    servingsize.appendChild(half);
+    var one = document.createElement('option');
+    one.value = 1;
+    one.textContent = '1';
+    servingsize.appendChild(one);
+    var two = document.createElement('option');
+    two.value = 2;
+    two.textContent = '2';
+    servingsize.appendChild(two);
+
+    var newLine = document.createElement('br');
+    var submit = document.createElement('button');
+    submit.textContent = 'Submit';
+    foodCard.appendChild(heading);
+    foodCard.appendChild(desc);
+    foodCard.appendChild(type);
+    foodCard.appendChild(cal);
+    foodCard.appendChild(prot);
+    foodCard.appendChild(carb);
+    foodCard.appendChild(fat);
+    foodCard.appendChild(mealtype);
+    foodCard.appendChild(servingsize);
+    foodCard.appendChild(newLine);
+    foodCard.appendChild(submit);
+    foodCard.className = 'foodCard';
+
+    return foodCard
   }
 };
 
@@ -260,33 +363,30 @@ saveMeasurmentButton.addEventListener('click', function(event){
 });
 
 // add new food items
-var saveFoodItemButton = document.getElementById('saveFoodItemButton');
-saveFoodItemButton.addEventListener('click', function(event){
-  var foodToAdd = document.getElementById('formFoodItemToAdd').value;
-  // foodToAdd = foodToAdd.replace(/\s+/g, '%20');
-  var url = "https://api.nutritionix.com/v1_1/search/"+ foodToAdd +"?brand_id=513fbc1283aa2dc80c000053&results=0%3A50&cal_min=0&cal_max=50000&fields=item_name%2Cnf_calories%2Cbrand_name&appId=ff882c0d&appKey=8c1b421a227f561199e051212e62c7b7"
-  // var url = "http://api.nutritionix.com/v1_1/search/"+foodToAdd+"?results=0:20&fields=*&appId=ff882c0d&appKey=8c1b421a227f561199e051212e62c7b7"
+var searchFoodItemButton = document.getElementById('searchFoodItemButton');
+searchFoodItemButton.addEventListener('click', function(event){
+  var item = document.getElementById('formFoodItemToAdd').value;
+  console.log(item);
+  var url = "http://lifecoach.digitalfields.co.za/food/get/item?item="+item
   fetch(url)
-  .then((resp)=>resp.json())
+  .then((resp)=> resp.json())
   .then(function(data){
-    // console.log(data.hits);
-    // data.hits.forEach(myFunction);
-    console.log(foodToAdd);
-    newItem = {name: foodToAdd};
-    writeData('food',newItem);
-    view.togglediv(document.getElementById('toggleAddFoodItemForm'));
+    if (data.length == 0) {
+      console.log('Hit fatsecret');
+      var fsurl = 'http://lifecoach.digitalfields.co.za/fatsecret/'+item;
+      console.log(fsurl);
+      fetch(fsurl)
+      .then((resp)=>resp.json())
+      .then(function(data){
+        console.log(data.foods.food.length);
+        wp.createNode(data.foods.food);
+        })
+      } else {
+        wp.createNode(data);
+      }
+    })
   });
 
-  function myFunction(item, index){
-    var listFood = document.getElementById('listFood');
-    console.log('item: ' + item.fields.item_name + '*-* Brand: ' + item.fields.brand_name);
-    // listFood.innerHTML = listFood['fields'][item_name].innerHTML + item + "<br>";
-  }
-  // food = {name: foodToAdd}
-  // writeData("food",food);
-  document.getElementById('addFoodItemForm').reset();
-  // view.togglediv(document.getElementById('toggleAddFoodItemForm'));
-  });
 
 // Add Food eaten
 var saveFoodEatenButton = document.getElementById('saveFoodEatenButton');
@@ -326,9 +426,12 @@ showAddNewUser.addEventListener('click', function(){
 // Food Item
 var showAddFoodItemForm = document.getElementById('showAddFoodItemForm');
 showAddFoodItemForm.addEventListener('click', function(){
+  view.togglediv(document.getElementById("displayUserProfile"));
   var showBox = document.getElementById('toggleAddFoodItemForm');
   view.togglediv(showBox);
 });
+//FoodListItem
+
 
 // New Measurements
 var showAddMeasurementForm = document.getElementById('showAddMeasurementForm');

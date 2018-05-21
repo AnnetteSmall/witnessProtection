@@ -119,8 +119,12 @@
     <div class="toggle" id="toggleAddFoodItemForm">
       <form id="addFoodItemForm" name="addFoodItemForm" class="display">
         <input id="formFoodItemToAdd" type="text" placeholder="Food Name">
-        <button  type='button' id="saveFoodItemButton">Search</button>
+        <button  type='button' id="searchFoodItemButton">Search</button>
       </form>
+      <div id="foodListBox" class="foodSelectList" >
+        <ul id="foodList" name="foodList" ></ul>
+      </div>
+      <div id='displayFoodItem'></div>
     </div>
 
 <!-- Naigation Menu -->
@@ -138,8 +142,6 @@
     <script src="scripts/DAO.js"></script>
     <!-- <script src="scripts/apiFatSecretCalls.js"></script> -->
     <script src="scripts/scripts.js"></script>
-    <script src="scripts/fatSecret.js"></script>
-    <script src="scripts/bundle.js"></script>
 
 
 <!--Upload  -->

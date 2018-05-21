@@ -3,8 +3,8 @@
 importScripts('/lc/web/scripts/idb.js');
 importScripts('/lc/web/scripts/DAO.js');
 
-var varCacheStaticVersion = 'LJF5';
-var varCacheDynamicVersion = 'LJF5';
+var varCacheStaticVersion = 'LJF6';
+var varCacheDynamicVersion = 'LJF6';
 
 
 self.addEventListener('install', function(event) {
@@ -18,7 +18,6 @@ self.addEventListener('install', function(event) {
         '/lc/web/index.html',
         '/lc/web/scripts/DAO.js',
         '/lc/web/scripts/idb.js',
-        '/lc/web/scripts/scripts.js',
         '/lc/web/styles/style.css'
     ]);
 
